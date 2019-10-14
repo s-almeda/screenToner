@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src='https://www.dukelearntoprogram.com/course1/common/js/image/SimpleImage.js'></script>
+	<!-- Konva -->
+	<script src="https://unpkg.com/konva@4.0.0/konva.min.js"></script>
+
+	<link rel="stylesheet" href="editor.css">
+
+	<!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+
+<!-- Top Navbar -->
+<nav class="navbar navbar-dark" style="background-color: #febbdd;">
+  <a class="navbar-brand" href="#">
+    Shm's Cool Image Processing App
+  </a>
+</nav>
+<br>
+
+<!-- File Upload and Display-->
+<div class="container">
+	<div class="row">
+
+		<div class="col-4">
+
+		  	<!-- left navbar -->
+			<div class="sidenav a">
+				
+				<h3>Sliders</h3>
+				<input type="range" min="1" max="100" value="50">
+				<input type="range" min="1" max="100" value="50">
+				<input type="range" min="1" max="100" value="50">
+
+				<h3>Buttons</h3>
+				<input type="button" value="Make Grayscale" onclick="makeGray()" >
+				<input type="button" value="Floyd-Steinberg" onclick="floydSteinberg()" >
+
+				<input type="button" value="threshold" onclick="threshold()" >
+
+
+				
+				<button type="button" class="btn btn-outline-secondary">A Button</button>
+			
+			  <a href="#about">Link</a>
+			</div>
+
+
+	  	</div>
+
+	  <div class="col-2">
+
+	  	<p><label for="file" style="cursor: pointer;">Upload An Image:</label></p>
+		<p><input type="file"
+		       id="fInput" name="fInput"
+		       accept="image/png, image/jpeg" 
+		       onchange="loadFile(event)"></p>
+		<p><label for="file" style="cursor: pointer;">Uploaded Image:</label></p>
+
+		<canvas id="can">
+		</canvas>
+
+	  </div>
+	
+	</div> <!--end of row-->
+		
+</div>
+
+
+
+
+
+
+<!-- load in javascript -->
+<script type="text/javascript" src="editor.js"></script>
+</head>
+<body>
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>
