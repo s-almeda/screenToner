@@ -10,6 +10,7 @@ var loadFile = function(event) {
   image.drawTo(canvas);
 };
 
+<<<<<<< HEAD
 function getPixelAvg(pixel){
   var avg = (pixel.getRed()+pixel.getGreen()+pixel.getBlue())/3;
   return avg;
@@ -26,10 +27,20 @@ function makeGray() {
   for (var pixel of image.values()) {
     var avg = getPixelAvg(pixel);
     pixel = setColors(pixel, avg);
+=======
+function makeGray() {
+  //change all pixels of image to gray
+  for (var pixel of image.values()) {
+    var avg = (pixel.getRed()+pixel.getGreen()+pixel.getBlue())/3;
+    pixel.setRed(avg);
+    pixel.setGreen(avg);
+    pixel.setBlue(avg);
+>>>>>>> adc96615a55e36aaa6b9855ca3eb4ef531c6537c
   }
   //display new image
   var canvas = document.getElementById("can");
   image.drawTo(canvas);
+<<<<<<< HEAD
 }
 
 function findClosestPaletteColor(pixel){
@@ -105,4 +116,6 @@ function floydSteinberg(){
   }
   
 
+=======
+>>>>>>> adc96615a55e36aaa6b9855ca3eb4ef531c6537c
 }
