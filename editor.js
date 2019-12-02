@@ -2,7 +2,34 @@
 //Get canvas
 var canvas = document.getElementById("can");
 var ctx = canvas.getContext('2d');
+
 var image, originalImage, fInput;
+var imageWidth, imageHeight;
+var imageUpload;
+
+var thresholdValue = document.getElementById("thresholdRange").value/100;
+
+
+// -------   Sliders Value Updates ------//
+var squareSlider = document.getElementById("circleSize");
+squareSlider.oninput = function() {
+  var label = document.getElementById("circleSizeLabel");
+  label.innerHTML = "Grid Size = " + squareSlider.value;
+  thHalftone()
+}
+
+var thresholdSlider = document.getElementById("thresholdRange");
+thresholdSlider.oninput = function() {
+  var label = document.getElementById("thresholdRangeLabel");
+  label.innerHTML = "Threshold Value = " + thresholdSlider.value + "%";
+  threshold(-1)
+}
+var htThresholdSlider = document.getElementById("htThresholdRange");
+htThresholdSlider.oninput = function() {
+  var label = document.getElementById("htThresholdRangeLabel");
+  label.innerHTML = "Halftone Threshold Value = " + htThresholdSlider.value + "%";
+  thHalftone()
+}
 
 
 //File Upload Function gets called when image is uploaded
@@ -17,14 +44,14 @@ fileInput.addEventListener('change', function(ev) {
     reader.readAsDataURL(file);
 
     reader.onloadend = function (e) {
-      var imageUpload = new Image();
+      imageUpload = new Image();
 
       imageUpload.src = e.target.result;
          
       imageUpload.onload = function(ev) {
         canvas = document.getElementById("can");
-        canvas.width = imageUpload.width;
-        canvas.height = imageUpload.height;
+        canvas.width = imageWidth = imageUpload.width;
+        canvas.height = imageHeight = imageUpload.height;
         ctx = canvas.getContext('2d');
         
         ctx.drawImage(imageUpload,0,0);
@@ -34,12 +61,48 @@ fileInput.addEventListener('change', function(ev) {
   }
 });
 
-function halftone(){
-  imageDataArray = ctx.getImageData(0,0, image.getWidth(), image.getHeight());
-  console.log(imageDataArray[0]);
+
+///// ***** HALFTONING FUNCTIONS ***** ////
+function thHalftone(){ //just black dots, uses thresholding
+  //reset();
+  //floydSteinberg();
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(imageUpload,0,0);
+  ctx = canvas.getContext('2d');
+
+  var imageDataObject; //= ctx.getImageData(0,0, image.getWidth(), image.getHeight());
+  //imageDataArray = imageDataObject.data;
+  var val = document.getElementById("circleSize").value/100;
+  maxSquareLength = imageWidth/10;
+  squareLength = maxSquareLength*val;
+  
+
+  for (var i = 0; i < imageWidth; i+= squareLength ){
+    for (var j = 0; j< imageHeight; j+=squareLength){
+      imageDataObject = ctx.getImageData(i, j, squareLength, squareLength);
+      ctx.beginPath()
+      ctx.fillStyle = 'white';
+      ctx.fillRect(i, j, squareLength+1, squareLength+1);
+      ctx.fillStyle = 'black';
+      drawCircle(squareLength/2 + i, squareLength/2 + j, squareLength/2*getSquareIntensity(imageDataObject));
+      ctx.fill();
+    }
+  }
 
 }
 
+function getSquareIntensity(imageDataObject){
+  var squareData = imageDataObject.data;
+  var squareSize = squareData.length/4;
+  var darkCount = 0;
+  for (var i = 0; i < squareData.length; i+=4){
+    thresholdValue = document.getElementById("htThresholdRange").value/100;
+    if (squareData[i] < 255*thresholdValue){ //if it is darker than 50% gray
+      darkCount++;//count it
+    }
+  }
+  return darkCount/squareSize;
+}
 
 
 function getPixelAvg(pixel){ //averages red, gree, and blue together 
@@ -64,6 +127,7 @@ function makeGray() {
 }
 
 function reset(){
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
   image = new SimpleImage(fileInput);
   image.drawTo(canvas);
 
@@ -85,8 +149,9 @@ function findClosestPaletteColor(pixel){
 };
 
 function threshold(lightness){
-  if (lightness < 0){
+    if (lightness < 0){
     var val = document.getElementById("thresholdRange").value/100;
+;
   }
   else{
     var val = lightness
@@ -151,6 +216,13 @@ function floydSteinberg(){
   }
   //display new image
   image.drawTo(canvas);
+}
+
+//Helper Functions
+
+function drawCircle(centerX, centerY, radius){
+  ctx.arc(centerX, centerY, radius, 0, 2*Math.PI);
+
 }
 
 const sleep = (milliseconds) => {

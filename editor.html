@@ -32,30 +32,28 @@
 		  	<!-- left navbar -->
 			<div class="sidenav a">
 				
-				<h3>Sliders</h3>
-				
-				<input type="range" min="1" max="100" value="50">
-				<input type="range" min="1" max="100" value="50">
+		
 
-				<h3>Buttons</h3>
+				<!--h3>Buttons</h3-->
 				<input type="button" value="Reset Image" onclick="reset()" >
 				<input type="button" value="Make Grayscale" onclick="makeGray()" >
 
 				<input type="button" value="Floyd-Steinberg" onclick="floydSteinberg()" >
 
 				<input type="button" value="Threshold" onclick="threshold(-1)" >
-				<input type="range" id="thresholdRange" min="1" max="100" value="50">
-				<input type="button" value="Halftone" onclick="halftone()" >
+				<div id="thresholdRangeLabel">Threshold Value = 50%</div> 
+				<input type="range" id="thresholdRange" min="1" max="100" value="50"> 
+				<h3>Halftoning </h3>
+				<br> 
+				<div id="circleSizeLabel">Grid Size = 50</div> 
+				<input type="range" id="circleSize" min="1" max="100" value="50"> 
+				<div id="htThresholdRangeLabel">Halftone Threshold Value = 50%</div> 
+				<input type="range" id="htThresholdRange" min="1" max="100" value="50"> 
+				<input type="button"
+				value="Threshold Halftone" onclick="thHalftone()" >
 
 
-				
-
-
-
-				
-				<button type="button" class="btn btn-outline-secondary">A Button</button>
-
-				<button type="button" class="btn btn-outline-secondary">A Button</button>
+			
 			
 			  <a href="#about">Link</a>
 			</div>
