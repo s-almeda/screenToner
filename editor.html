@@ -33,25 +33,28 @@
 			<div class="sidenav a">
 				
 				<h3>Sliders</h3>
-				<input type="range" min="1" max="100" value="50">
+				
 				<input type="range" min="1" max="100" value="50">
 				<input type="range" min="1" max="100" value="50">
 
 				<h3>Buttons</h3>
+				<input type="button" value="Reset Image" onclick="reset()" >
 				<input type="button" value="Make Grayscale" onclick="makeGray()" >
-<<<<<<< HEAD
+
 				<input type="button" value="Floyd-Steinberg" onclick="floydSteinberg()" >
 
-				<input type="button" value="threshold" onclick="threshold()" >
+				<input type="button" value="Threshold" onclick="threshold(-1)" >
+				<input type="range" id="thresholdRange" min="1" max="100" value="50">
+				<input type="button" value="Halftone" onclick="halftone()" >
 
 
 				
-=======
 
 
+
+				
 				<button type="button" class="btn btn-outline-secondary">A Button</button>
-				<button type="button" class="btn btn-outline-secondary">A Button</button>
->>>>>>> adc96615a55e36aaa6b9855ca3eb4ef531c6537c
+
 				<button type="button" class="btn btn-outline-secondary">A Button</button>
 			
 			  <a href="#about">Link</a>
@@ -65,8 +68,7 @@
 	  	<p><label for="file" style="cursor: pointer;">Upload An Image:</label></p>
 		<p><input type="file"
 		       id="fInput" name="fInput"
-		       accept="image/png, image/jpeg" 
-		       onchange="loadFile(event)"></p>
+		       accept="image/png, image/jpeg" ></p>
 		<p><label for="file" style="cursor: pointer;">Uploaded Image:</label></p>
 
 		<canvas id="can">

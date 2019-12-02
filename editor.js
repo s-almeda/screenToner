@@ -1,17 +1,48 @@
 //<!--Javascript to display uploaded image-->
+//Get canvas
+var canvas = document.getElementById("can");
+var ctx = canvas.getContext('2d');
+var image, originalImage, fInput;
 
-var loadFile = function(event) {
-	document.getElementById("fInput");
-  //Make new SimpleImage from file input
-  image = new SimpleImage(fInput);
-  //Get canvas
-  var canvas = document.getElementById("can");
-  //Draw image on canvas
-  image.drawTo(canvas);
-};
 
-<<<<<<< HEAD
-function getPixelAvg(pixel){
+//File Upload Function gets called when image is uploaded
+let fileInput = document.getElementById('fInput');
+fileInput.addEventListener('change', function(ev) {
+  image = new SimpleImage(fileInput); //just to retain SimpleImage functionality for now
+   if(ev.target.files) {
+
+    let file = ev.target.files[0];
+    var reader  = new FileReader();
+
+    reader.readAsDataURL(file);
+
+    reader.onloadend = function (e) {
+      var imageUpload = new Image();
+
+      imageUpload.src = e.target.result;
+         
+      imageUpload.onload = function(ev) {
+        canvas = document.getElementById("can");
+        canvas.width = imageUpload.width;
+        canvas.height = imageUpload.height;
+        ctx = canvas.getContext('2d');
+        
+        ctx.drawImage(imageUpload,0,0);
+          
+       }
+    }
+  }
+});
+
+function halftone(){
+  imageDataArray = ctx.getImageData(0,0, image.getWidth(), image.getHeight());
+  console.log(imageDataArray[0]);
+
+}
+
+
+
+function getPixelAvg(pixel){ //averages red, gree, and blue together 
   var avg = (pixel.getRed()+pixel.getGreen()+pixel.getBlue())/3;
   return avg;
 }
@@ -27,20 +58,15 @@ function makeGray() {
   for (var pixel of image.values()) {
     var avg = getPixelAvg(pixel);
     pixel = setColors(pixel, avg);
-=======
-function makeGray() {
-  //change all pixels of image to gray
-  for (var pixel of image.values()) {
-    var avg = (pixel.getRed()+pixel.getGreen()+pixel.getBlue())/3;
-    pixel.setRed(avg);
-    pixel.setGreen(avg);
-    pixel.setBlue(avg);
->>>>>>> adc96615a55e36aaa6b9855ca3eb4ef531c6537c
   }
   //display new image
-  var canvas = document.getElementById("can");
   image.drawTo(canvas);
-<<<<<<< HEAD
+}
+
+function reset(){
+  image = new SimpleImage(fileInput);
+  image.drawTo(canvas);
+
 }
 
 function findClosestPaletteColor(pixel){
@@ -56,34 +82,46 @@ function findClosestPaletteColor(pixel){
 
   return newPixel;
   
-}
-function threshold(){
+};
+
+function threshold(lightness){
+  if (lightness < 0){
+    var val = document.getElementById("thresholdRange").value/100;
+  }
+  else{
+    var val = lightness
+  }
+  
   var imageWidth = image.getWidth();
   var imageHeight = image.getHeight();
-  var x, y;
-  var canvas = document.getElementById("can");
-  for(y= 1; y<imageHeight; y++){//top to bottom
-    for(x=1; x<imageWidth; x++){ //left to right
+  var x, y, avg;
+
+  for(y= 0; y<imageHeight; y++){//top to bottom
+    for(x=0; x<imageWidth; x++){ //left to right
 
       oldPixel = image.getPixel(x,y);
       oldPixelVal = getPixelAvg(oldPixel);
 
-      newPixel = findClosestPaletteColor(oldPixel);
-      newPixelVal = getPixelAvg(oldPixel)
+      if (oldPixelVal > (255*val)){
+        oldPixel = setColors(oldPixel, 255);
+      }
+      else{
+        oldPixel = setColors(oldPixel, 0);
+      }
 
-      image.setPixel(x,y, newPixel)
+      image.setPixel(x,y, oldPixel)
     }
   }
   image.drawTo(canvas);
 
-}
+};
 
 function floydSteinberg(){
   var imageWidth = image.getWidth()-1;
   var imageHeight = image.getHeight()-1;
   var x, y;
   var oldPixel, newPixel, quant_error, rightPixel, bottomLeftPixel, bottomPixel, bottomRightPixel;
-  var canvas = document.getElementById("can");
+  
   for(y= 1; y<imageHeight; y++){//top to bottom
     for(x=1; x<imageWidth; x++){
 
@@ -110,12 +148,11 @@ function floydSteinberg(){
       image.setPixel(x+1, y+1, setColors(bottomRightPixel, getPixelAvg(bottomRightPixel) + quant_error * 1 / 16))
 
     }
-    //display new image
-    image.drawTo(canvas);
-
   }
-  
+  //display new image
+  image.drawTo(canvas);
+}
 
-=======
->>>>>>> adc96615a55e36aaa6b9855ca3eb4ef531c6537c
+const sleep = (milliseconds) => {
+  return new Promise(resolve => setTimeout(resolve, milliseconds))
 }
